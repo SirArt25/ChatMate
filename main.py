@@ -6,7 +6,8 @@ from chatbot_business import Chatbot
 if __name__ == "__main__":
     env_manipulator.configure_environment()
     chatbot = Chatbot()
-    print(chatbot.ask("Please tell me about git bisect"))
+    while True:
+        print(chatbot.ask(str(input("Give me a question\n"))))
 
 
 
