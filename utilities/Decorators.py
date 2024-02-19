@@ -1,6 +1,6 @@
 from functools import partial
 
-# add strict strict_classmethod to ensure that i can create strictly classmethods
+# add strict strict_classmethod to ensure that user can create strictly classmethods
 class strict_classmethod:
     def __init__(self, func):
          self.func = func
