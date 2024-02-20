@@ -15,7 +15,7 @@ class ChatbotApp:
 
     def show(self):
         # Streamlit UI
-        st.title("ChatGPT-like Chatbot")
+        st.title("Chatbot")
         st.markdown("---")
 
         # Custom CSS styles
