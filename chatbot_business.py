@@ -46,5 +46,3 @@ class ChatbotEngine:
             return_source_documents=True,
             chain_type_kwargs={"prompt": QA_CHAIN_PROMPT}
         )
-
-
