@@ -1,14 +1,12 @@
-import env_manipulator
-from vectordb import MiniDB
-from loader import  Loader
-from chatbot_business import Chatbot
+from chatbot_app import ChatbotApp
+from chatbot_business import ChatbotEngine
+from env_manipulator import configure_environment
+# we are trying to initialize  backend functions here
 
 if __name__ == "__main__":
-    env_manipulator.configure_environment()
-    chatbot = Chatbot()
-    while True:
-        print(chatbot.ask(str(input("Give me a question\n"))))
-
-
+    configure_environment()
+    engine = ChatbotEngine.create_engine()
+    app = ChatbotApp(engine)
+    app.show()
 
 
