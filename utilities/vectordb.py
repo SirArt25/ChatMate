@@ -1,6 +1,9 @@
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
 from utilities.loader import Loader
+from typing import Iterable
+from langchain_core.documents import Document
+
 import os
 
 
@@ -17,9 +20,9 @@ class MiniDB:
         )
         return True
 
-    def create(self, loader : Loader):
+    def create(self, documents: Iterable[Document]):
         self.__db = Chroma.from_documents(
-            documents=loader.load_chunks(),
+            documents=documents,
             embedding=OpenAIEmbeddings(),
             persist_directory=self.__persist_directory
         )

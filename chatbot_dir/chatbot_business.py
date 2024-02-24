@@ -4,6 +4,7 @@ from utilities.decorators import strict_classmethod
 from utilities.vectordb import MiniDB
 from utilities.loader import Loader
 from langchain.prompts import PromptTemplate
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 import datetime
 import streamlit as st
@@ -28,7 +29,10 @@ class ChatbotEngine:
 
     def __initialize(self):
         # Build prompt
-        template = """Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer. Use three sentences maximum. Keep the answer as concise as possible. Always say "thanks for asking!" at the end of the answer. 
+        template = """Use the following pieces of context to answer the question at the end. If you don't know the answer, 
+        just say that you don't know, don't try to make up an answer.
+        Use ten sentences maximum. Keep the answer as concise as possible.
+        Always say "thanks for asking!" at the end of the answer. 
                 {context}
                 Question: {question}
                 Helpful Answer:"""
@@ -42,7 +46,17 @@ class ChatbotEngine:
 
         manual_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'manuals', 'git.pdf')
 
-        self.__mini_db.create(Loader(manual_path))
+        r_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=450,
+            chunk_overlap=100,
+            separators=["\n\n", "\n", "(?<=\. )", " ", ""]
+        )
+
+        loader = Loader(manual_path)
+        documents = loader.load_chunks(r_splitter)
+
+
+        self.__mini_db.create(documents)
 
         llm = ChatOpenAI(model_name=self.__llm_name, temperature=0)
         self.__qa_chain = RetrievalQA.from_chain_type(
