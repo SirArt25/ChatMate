@@ -1,5 +1,5 @@
 import streamlit as st
-from chatbot_business import ChatbotEngine
+from chatbot_dir.chatbot_business import ChatbotEngine
 
 class ChatbotApp:
     __instance = None

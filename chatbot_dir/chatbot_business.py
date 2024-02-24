@@ -1,12 +1,13 @@
 from langchain.chains import RetrievalQA
 from langchain_openai import ChatOpenAI
+from utilities.decorators import strict_classmethod
+from utilities.vectordb import MiniDB
+from utilities.loader import Loader
+from langchain.prompts import PromptTemplate
 
 import datetime
-from vectordb import MiniDB
-from loader import Loader
-from langchain.prompts import PromptTemplate
 import streamlit as st
-from utilities.Decorators import strict_classmethod
+import os
 
 
 # we assume that chatbot_logic can be more than one
@@ -14,6 +15,7 @@ class ChatbotEngine:
 
     def ask(self, question: str):
         return self.__qa_chain.invoke({"query": question})["result"]
+
     def __init__(self):
         pass
 
@@ -37,7 +39,10 @@ class ChatbotEngine:
         else:
             self.__llm_name = "gpt-3.5-turbo"
         self.__mini_db = MiniDB()
-        self.__mini_db.create(Loader("manuals/git.pdf"))
+
+        manual_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'manuals', 'git.pdf')
+
+        self.__mini_db.create(Loader(manual_path))
 
         llm = ChatOpenAI(model_name=self.__llm_name, temperature=0)
         self.__qa_chain = RetrievalQA.from_chain_type(

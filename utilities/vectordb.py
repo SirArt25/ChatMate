@@ -1,8 +1,7 @@
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
-from loader import Loader
+from utilities.loader import Loader
 import os
-import tiktoken
 
 
 class MiniDB:
