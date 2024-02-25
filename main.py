@@ -6,7 +6,6 @@ from utilities.env_manipulator import configure_environment
 if __name__ == "__main__":
     configure_environment()
     engine = ChatbotEngine.create_engine()
+   # engine2 = ChatbotEngine()
     app = ChatbotApp(engine)
     app.show()
-
-

@@ -1,14 +1,38 @@
 @startuml
+
+
 abstract class QueryRewriter {
     + rewrite(in query: String): String
 }
 
 class LLMQueryRewriter {
-    - llm: BaseLanguageModel
-    - template: String
     + LLMQueryRewriter(llm: BaseLanguageModel)
     + rewrite(in query: String): String
+    ===
+    - llm: BaseLanguageModel
+    - template: String
 }
-QueryRewriter <|-- LLMQueryRewriter
 
+
+class ChatbotEngine {
+    + {static} create_engine(): ChatbotEngine
+    + invoke(in query: String): String
+    ===
+    - initialize_template(template: Optional[str]): void
+    - initialize_db(persist_directory: String): void
+    - initialize_core(): void
+}
+
+
+class MiniDB  << (S,#FF7700) Singleton >> {
+
+    + load(): bool
+    + exist(): bool
+    + create(documents: Iterable[Document]): void
+    + get_vector_store(): vectorstores.chroma.Chroma
+}
+
+QueryRewriter <|-- LLMQueryRewriter
+ChatbotEngine o-- QueryRewriter
+ChatbotEngine o-- MiniDB
 @enduml
