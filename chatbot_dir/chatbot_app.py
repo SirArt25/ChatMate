@@ -61,7 +61,7 @@ class ChatbotApp:
         if st.button("Send", key="send_button"):
             if user_input:
                 conversation.append(("user", user_input))
-                bot_response = self.__engine.ask(question=user_input)
+                bot_response = self.__engine.invoke(question=user_input)
                 conversation.append(("bot", bot_response))
                 user_input = ""
             else:

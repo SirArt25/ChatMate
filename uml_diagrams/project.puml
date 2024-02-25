@@ -16,16 +16,17 @@ class LLMQueryRewriter {
 
 class ChatbotEngine {
     + {static} create_engine(): ChatbotEngine
+    ===
     + invoke(in query: String): String
     ===
     - initialize_template(template: Optional[str]): void
     - initialize_db(persist_directory: String): void
-    - initialize_core(): void
+    - initialize_llm(llm: Optional[BaseLanguageModel]): void
+    - initialize_rewriter(llm: Optional[BaseLanguageModel]): void
 }
 
 
 class MiniDB  << (S,#FF7700) Singleton >> {
-
     + load(): bool
     + exist(): bool
     + create(documents: Iterable[Document]): void

@@ -1,12 +1,12 @@
 from langchain_core.language_models import BaseLanguageModel
 from langchain_core.prompts import PromptTemplate
 
-from query_manipulators.query_rewriter import QueryRewriter
+from query_manipulators.rewriter.query_rewriter import QueryRewriter
 from pyrsistent import freeze
 
 
 class LLMQueryRewriter(QueryRewriter):
-    def __init__(self, llm: BaseLanguageModel):
+    def __init__(self, llm: BaseLanguageModel) -> object:
         self.__initializer(freeze(llm))
 
     def __initializer(self, llm: BaseLanguageModel):
