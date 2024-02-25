@@ -33,7 +33,27 @@ class MiniDB  << (S,#FF7700) Singleton >> {
     + get_vector_store(): vectorstores.chroma.Chroma
 }
 
+
+
 QueryRewriter <|-- LLMQueryRewriter
+QueryRetriever <|-- MMRQueryRetriever
+
 ChatbotEngine o-- QueryRewriter
 ChatbotEngine o-- MiniDB
+ChatbotEngine o-- QueryRetriever
+
+
+
+
+abstract class QueryRetriever {
+    + get_docs(in query: String): List[Document]
+}
+class MMRQueryRetriever {
+    + MMRQueryRetriever(in vectorStore: Chroma, in fetch_k: int)
+    ===
+    + get_docs(in query: String): List[Document]
+    ===
+    - vectorStore: Chroma
+    - fetch_k: int
+}
 @enduml

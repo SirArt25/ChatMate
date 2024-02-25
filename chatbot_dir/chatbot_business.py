@@ -8,6 +8,7 @@ from typing import Optional
 from langchain.prompts import PromptTemplate
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_core.language_models import BaseLanguageModel
+from query_manipulators.retriever.mmr_query_retriever import MMRQueryRetriever
 
 import datetime
 import streamlit as st
@@ -18,19 +19,23 @@ import os
 class ChatbotEngine:
 
     def invoke(self, question: str):
+        docs = self.__retriever.get_docs(question)
+
         return ""
         # return self.__qa_chain.invoke({"query": question})["result"]
 
     def __init__(self):
         pass
+
     @strict_classmethod
     @st.cache_resource
-    def create_engine(self):
+    def create_engine(self, k: int, fetch_k: int):
         temp = ChatbotEngine()
         temp.__initialize_llm()
         temp.__initialize_template()
         temp.__initialize_db()
         temp.__initialize_rewriter()
+        temp.__initialize_retriever(fetch_k=fetch_k, k=k)
         return temp
 
     def __initialize_template(self, template: Optional[str] = None):
@@ -79,3 +84,9 @@ class ChatbotEngine:
                 raise LogicError("Called __initialize_rewriter without any llm model")
         else:
             self.__rewriter = LLMQueryRewriter(llm)
+
+    def __initialize_retriever(self, fetch_k: int, k: int):
+        try:
+            self.__retriever = MMRQueryRetriever(self.__mini_db.get_vector_store(), fetch_k, k)
+        except AttributeError:
+            raise LogicError("MiniDb is not initialized")

@@ -6,7 +6,7 @@ from pyrsistent import freeze
 
 
 class LLMQueryRewriter(QueryRewriter):
-    def __init__(self, llm: BaseLanguageModel) -> object:
+    def __init__(self, llm: BaseLanguageModel):
         self.__initializer(freeze(llm))
 
     def __initializer(self, llm: BaseLanguageModel):

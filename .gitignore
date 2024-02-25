@@ -108,4 +108,8 @@ ipython_config.py
 .dmypy.json
 dmypy.json
 
+
+# png
+*.png
+
 # End of file
