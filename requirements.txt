@@ -32,6 +32,7 @@ greenlet==3.0.3
 grpcio==1.60.1
 h11==0.14.0
 httpcore==1.0.3
+httplib2==0.22.0
 httptools==0.6.1
 httpx==0.26.0
 huggingface-hub==0.20.3
@@ -77,6 +78,7 @@ overrides==7.7.0
 packaging==23.2
 pandas==2.2.0
 pillow==10.2.0
+plantuml==0.3.0
 posthog==3.4.1
 protobuf==4.25.3
 pulsar-client==3.4.0
@@ -87,9 +89,11 @@ pydantic==2.6.1
 pydantic_core==2.16.2
 pydeck==0.8.1b0
 Pygments==2.17.2
+pyparsing==3.1.1
 pypdf==4.0.1
 PyPika==0.48.9
 pyproject_hooks==1.0.0
+pyrsistent==0.20.0
 python-dateutil==2.8.2
 python-dotenv==1.0.1
 pytz==2024.1
