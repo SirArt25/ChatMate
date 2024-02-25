@@ -21,7 +21,7 @@ class MiniDB:
         )
         return True
 
-    def exist(self):
+    def exist(self) -> bool:
         return os.path.exists(self.__persist_directory)
 
     def create(self, documents: Iterable[Document]):

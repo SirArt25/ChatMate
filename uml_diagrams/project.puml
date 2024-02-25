@@ -15,7 +15,7 @@ class LLMQueryRewriter {
 
 
 class ChatbotEngine {
-    + {static} create_engine(): ChatbotEngine
+    + {static} create_engine(k: int, fetch_k: int): ChatbotEngine
     ===
     + invoke(in query: String): String
     ===
@@ -23,6 +23,12 @@ class ChatbotEngine {
     - initialize_db(persist_directory: String): void
     - initialize_llm(llm: Optional[BaseLanguageModel]): void
     - initialize_rewriter(llm: Optional[BaseLanguageModel]): void
+    - initialize_retriever(fetch_k: int, k: int): void
+    ===
+    - mini_db: MiniDB
+    - llm: BaseLanguageModel
+    - rewriter: QueryRewriter
+    - retriever: QueryRetriever
 }
 
 
@@ -31,6 +37,9 @@ class MiniDB  << (S,#FF7700) Singleton >> {
     + exist(): bool
     + create(documents: Iterable[Document]): void
     + get_vector_store(): vectorstores.chroma.Chroma
+    ===
+    - db: Chroma
+    - persist_directory: String
 }
 
 
@@ -49,11 +58,12 @@ abstract class QueryRetriever {
     + get_docs(in query: String): List[Document]
 }
 class MMRQueryRetriever {
-    + MMRQueryRetriever(in vectorStore: Chroma, in fetch_k: int)
+    + MMRQueryRetriever(in vectorStore: Chroma, in fetch_k: int, in k: int)
     ===
     + get_docs(in query: String): List[Document]
     ===
     - vectorStore: Chroma
     - fetch_k: int
+    - k: int
 }
 @enduml
