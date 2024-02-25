@@ -1,5 +1,14 @@
 @startuml
 abstract class QueryRewriter {
-    rewrite(in query: String): String
+    + rewrite(in query: String): String
 }
+
+class LLMQueryRewriter {
+    - llm: BaseLanguageModel
+    - template: String
+    + LLMQueryRewriter(llm: BaseLanguageModel)
+    + rewrite(in query: String): String
+}
+QueryRewriter <|-- LLMQueryRewriter
+
 @enduml
