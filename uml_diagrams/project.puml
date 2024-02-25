@@ -50,7 +50,7 @@ QueryRetriever <|-- MMRQueryRetriever
 ChatbotEngine o-- QueryRewriter
 ChatbotEngine o-- MiniDB
 ChatbotEngine o-- QueryRetriever
-
+ChatbotApp o-- ChatbotEngine
 
 
 
@@ -66,4 +66,10 @@ class MMRQueryRetriever {
     - fetch_k: int
     - k: int
 }
+
+
+class ChatbotApp  << (S,#FF7700) Singleton >> {
+    + show(self): void
+}
+
 @enduml
