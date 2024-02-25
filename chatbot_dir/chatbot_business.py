@@ -19,10 +19,16 @@ import os
 class ChatbotEngine:
 
     def invoke(self, question: str):
+        prompt_text = self.__template
+        good_question = self.__rewriter.rewrite(question).content
+
         docs = self.__retriever.get_docs(question)
 
-        return ""
-        # return self.__qa_chain.invoke({"query": question})["result"]
+        for doc in docs:
+            prompt_text += (doc.page_content + "\n\n")
+        prompt_text += ("Question: " + good_question)
+
+        return self.__llm.invoke(prompt_text).content
 
     def __init__(self):
         pass
@@ -40,15 +46,12 @@ class ChatbotEngine:
 
     def __initialize_template(self, template: Optional[str] = None):
         if template is None:
-            template = """Use the following pieces of context to answer the question at the end. If you don't know the answer, 
+            self.__template = """Use the following pieces of context to answer the question at the end. If you don't know the answer, 
                 just say that you don't know, don't try to make up an answer.
                 Use ten sentences maximum. Keep the answer as concise as possible.
-                Always say "thanks for asking!" at the end of the answer. 
-                        {context}
-                        Question: {question}
-                        Helpful Answer:"""
-
-        self.__qa_chain_prompt = PromptTemplate.from_template(template)
+                Always say "thanks for asking!" at the end of the answer."""
+        else:
+            self.__template = template
 
     def __initialize_db(self, persist_directory: Optional[str] = 'docs/chroma/'):
         self.__mini_db = MiniDB(persist_directory)
