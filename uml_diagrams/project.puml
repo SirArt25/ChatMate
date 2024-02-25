@@ -1,0 +1,5 @@
+@startuml
+abstract class QueryRewriter {
+    rewrite(in query: String): String
+}
+@enduml
