@@ -69,7 +69,7 @@ class MMRQueryRetriever {
 
 
 class ChatbotApp  << (S,#FF7700) Singleton >> {
-    + show(self): void
+    + show(): void
 }
 
 @enduml
