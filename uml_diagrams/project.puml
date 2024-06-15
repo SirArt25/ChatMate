@@ -1,0 +1,75 @@
+@startuml
+
+
+abstract class QueryRewriter {
+    + rewrite(in query: String): String
+}
+
+class LLMQueryRewriter {
+    + LLMQueryRewriter(llm: BaseLanguageModel)
+    + rewrite(in query: String): String
+    ===
+    - llm: BaseLanguageModel
+    - template: String
+}
+
+
+class ChatbotEngine {
+    + {static} create_engine(k: int, fetch_k: int): ChatbotEngine
+    ===
+    + invoke(in query: String): String
+    ===
+    - initialize_template(template: Optional[str]): void
+    - initialize_db(persist_directory: String): void
+    - initialize_llm(llm: Optional[BaseLanguageModel]): void
+    - initialize_rewriter(llm: Optional[BaseLanguageModel]): void
+    - initialize_retriever(fetch_k: int, k: int): void
+    ===
+    - mini_db: MiniDB
+    - llm: BaseLanguageModel
+    - rewriter: QueryRewriter
+    - retriever: QueryRetriever
+}
+
+
+class MiniDB  << (S,#FF7700) Singleton >> {
+    + load(): bool
+    + exist(): bool
+    + create(documents: Iterable[Document]): void
+    + get_vector_store(): vectorstores.chroma.Chroma
+    ===
+    - db: Chroma
+    - persist_directory: String
+}
+
+
+
+QueryRewriter <|-- LLMQueryRewriter
+QueryRetriever <|-- MMRQueryRetriever
+
+ChatbotEngine o-- QueryRewriter
+ChatbotEngine o-- MiniDB
+ChatbotEngine o-- QueryRetriever
+ChatbotApp o-- ChatbotEngine
+
+
+
+abstract class QueryRetriever {
+    + get_docs(in query: String): List[Document]
+}
+class MMRQueryRetriever {
+    + MMRQueryRetriever(in vectorStore: Chroma, in fetch_k: int, in k: int)
+    ===
+    + get_docs(in query: String): List[Document]
+    ===
+    - vectorStore: Chroma
+    - fetch_k: int
+    - k: int
+}
+
+
+class ChatbotApp  << (S,#FF7700) Singleton >> {
+    + show(): void
+}
+
+@enduml
